@@ -56,3 +56,31 @@ class Solution {
     }
 }
 --------------------------------------------------------------------------------------------------
+OPTIMAL CODE(same optimal return second tym)
+class Solution {
+    public int numOfSubarrays(int[] arr, int k, int threshold) {
+        int count=0,temp=0,j=0;
+        double max=0;
+        for(int i=0;i<k;i++)
+        {
+            temp=temp+arr[i];
+        }
+        for(int i=k;i<arr.length;i++)
+        {
+            max=(double)temp/k;
+            if(threshold<=max)
+            {
+                count++;
+            }
+            temp=temp-arr[j];
+            temp=temp+arr[i];
+            j++;
+        }
+        max=(double)temp/k;
+        if(threshold<=max)
+        {
+            count++;
+        }
+        return count;
+    }
+}
