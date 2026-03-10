@@ -1,0 +1,116 @@
+LEETCODE 1456. Maximum Number of Vowels in a Substring of Given Length
+
+Given a string s and an integer k, return the maximum 
+number of vowel letters in any substring of s with length k.
+Vowel letters in English are 'a', 'e', 'i', 'o', and 'u'.
+
+Example 1:
+Input: s = "abciiidef", k = 3
+Output: 3
+Explanation: The substring "iii" contains 3 vowel letters.
+Example 2:
+Input: s = "aeiou", k = 2
+Output: 2
+Explanation: Any substring of length 2 contains 2 vowels.
+Example 3:
+Input: s = "leetcode", k = 3
+Output: 2
+Explanation: "lee", "eet" and "ode" contain 2 vowels.
+-------------------------------------------------------------------------------------------------------------
+Key Points:INITIAL CODE:
+This problem belongs to Fixed Size Sliding Window.
+Window size is always k.
+Brute force approach checks every substring of length k.
+That leads to O(n × k) time complexity.
+Optimization idea:
+Compute vowel count for first window.
+Then slide the window.
+When sliding:
+Remove the left character
+Add the new right character
+Update the maximum vowel count.
+This reduces time complexity to:
+Time Complexity: O(n * k)
+Space Complexity: O(1)
+
+Initial Code (Brute Force – O(n * k))
+INITIAL CODE: TIME COMPLEXITY:O(N*K) || SPACE COMPLEXITY:O(N)
+class Solution {
+    public int maxVowels(String s, int k) {
+        int max=Integer.MIN_VALUE,count=0;
+        String temp="";
+        for(int i=0;i<=s.length()-k;i++)
+        {
+            for(int j=i;j<k+i;j++)
+            {
+                char check=s.charAt(j);
+                if(check=='a' || check=='e' ||check=='i' ||check=='o' ||check=='u')
+                {
+                    count++;
+                }
+            }
+            max=Math.max(count,max);
+            count=0;
+        }
+        return max;
+    }
+}
+-------------------------------------------------------------------------------------------------------------
+Key Points (Concepts Used):
+
+This problem belongs to Fixed Size Sliding Window.
+Window size is always k.
+Instead of checking every substring again (O(n*k)), we reuse the previous window computation.
+Steps followed:
+Count vowels in the first window (0 → k-1).
+Store this count.
+Slide the window one step at a time.
+When sliding:
+Remove the left character.
+Add the new right character.
+Update the maximum vowel count.
+This reduces complexity to:
+Time Complexity: O(n)
+Space Complexity: O(1)
+Key sliding window idea:
+Don't recompute the whole window
+Only adjust the characters entering and leaving the window.
+
+OPTIMZED CODE: TIME COMPLEXITY:O(N) || SPACE COMPLEXITY:O(1)
+class Solution {
+    public int maxVowels(String s, int k) {
+        int max=Integer.MIN_VALUE,count=0;
+        if(s.length()==1)
+        {
+            if(s.charAt(0)=='a' || s.charAt(0)=='e' || s.charAt(0)=='i' || s.charAt(0)=='o' || s.charAt(0)=='u')
+            {
+                return 1;
+            }
+        }
+        for(int i=0;i<k;i++)
+        {
+            if(s.charAt(i)=='a' || s.charAt(i)=='e' || s.charAt(i)=='i' || s.charAt(i)=='o' || s.charAt(i)=='u')
+                {
+                    count++;
+                }
+        }
+        int j=0;
+        for(int i=k;i<s.length();i++)
+        {
+            char remove=s.charAt(j);
+            char add=s.charAt(i);
+            max=Math.max(count,max);
+            if(remove=='a' || remove=='e' || remove=='i' ||remove=='o' ||remove=='u')
+                {
+                    count--;
+                }
+            if(add=='a' || add=='e' || add=='i' ||add=='o' || add=='u')
+                {
+                    count++;
+                }
+            j++;
+        }
+        max=Math.max(count,max);
+        return max;
+    }
+}
